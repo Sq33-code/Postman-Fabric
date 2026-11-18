@@ -1,0 +1,22 @@
+accessWidener v1 named
+
+# for quickthrow and quickplace modules
+accessible field net/minecraft/client/MinecraftClient itemUseCooldown I
+
+accessible field net/minecraft/client/gui/screen/ChatScreen chatField Lnet/minecraft/client/gui/widget/TextFieldWidget;
+
+# for fullbright
+accessible field net/minecraft/client/option/SimpleOption value Ljava/lang/Object;
+
+# for nofall
+accessible field net/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket onGround Z
+mutable field net/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket onGround Z
+
+# for noKnockback module
+accessible field net/minecraft/network/packet/s2c/play/EntityVelocityUpdateS2CPacket velocity Lnet/minecraft/util/math/Vec3d;
+mutable field net/minecraft/network/packet/s2c/play/EntityVelocityUpdateS2CPacket velocity Lnet/minecraft/util/math/Vec3d;
+accessible field net/minecraft/network/packet/s2c/play/ExplosionS2CPacket playerKnockback Ljava/util/Optional;
+mutable field net/minecraft/network/packet/s2c/play/ExplosionS2CPacket playerKnockback Ljava/util/Optional;
+
+# for noSlow module
+accessible method net/minecraft/client/network/ClientPlayerEntity shouldStopSprinting ()Z

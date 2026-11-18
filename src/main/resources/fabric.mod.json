@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "postman",
+  "version": "${version}",
+  "name": "Postman",
+  "description": "Community continuation of Postman for Minecraft 1.21.11. Maintained by Sq33.",
+  "authors": [
+    "SrgantMooMoo",
+    "TechAle",
+    "lukflug",
+    "cattyn",
+    "fluffery",
+    "MWA",
+    "recior",
+    "many others for their help :)"
+  ],
+  "contact": {
+    "homepage": "https://techale.github.io/postman-website/",
+    "sources": "https://github.com/srgantmoomoo/postman"
+  },
+  "license": "MIT",
+  "icon": "assets/postman/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.srgantmoomoo.postman.Main"
+    ]
+  },
+  "mixins": [
+    "postman.mixins.json"
+  ],
+  "accessWidener": "postman.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "fabric-api": "*",
+    "minecraft": "1.21.11",
+    "java": ">=21"
+  },
+  "contributors": [
+    "Sq33 (Minecraft 1.21.11 port and maintainer)"
+  ]
+}

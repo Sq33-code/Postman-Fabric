@@ -1,0 +1,191 @@
+package me.srgantmoomoo.postman.config;
+
+import me.srgantmoomoo.postman.Main;
+import me.srgantmoomoo.postman.clickgui.CategoryRect;
+import me.srgantmoomoo.postman.clickgui.ClickGuiScreen;
+import me.srgantmoomoo.postman.module.Module;
+import me.srgantmoomoo.postman.module.hud.HudModule;
+import me.srgantmoomoo.postman.module.setting.Setting;
+import me.srgantmoomoo.postman.module.setting.settings.*;
+import net.minecraft.client.MinecraftClient;
+
+import java.io.*;
+import java.util.Iterator;
+
+public class Load {
+    public File MainDirectory;
+
+    public Load() {
+        MainDirectory = new File(MinecraftClient.getInstance().runDirectory, "postman");
+        if(!MainDirectory.exists()) {
+            MainDirectory.mkdirs();
+        }
+        load();
+    }
+
+    public void load() {
+        loadModules();
+        loadSettings();
+        loadPrefix();
+        loadGui();
+        loadHud();
+    }
+
+
+    public void loadModules() {
+        try {
+            File file = new File(MainDirectory, "modules.txt");
+            if (!file.isFile()) return;
+            FileInputStream fs = new FileInputStream(file.getAbsolutePath());
+            DataInputStream ds = new DataInputStream(fs); // like the nintendo ds cool :o.
+            BufferedReader br = new BufferedReader(new InputStreamReader(ds));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println("Current Module Line: " + line);
+                System.out.println("ALL MODULES:" + Main.INSTANCE.moduleManager.getModules());
+                for(Module m : Main.INSTANCE.moduleManager.getModules()) {
+                    System.out.println("Current Module: " + m.getName());
+                    if(m.getName().equalsIgnoreCase(line)) {
+                        if(m.getName().equalsIgnoreCase("clickGui") || m.getName().equalsIgnoreCase("hudEditor"))
+                            continue;
+                        m.enable();
+                        System.out.println("Module Enabled: " + m.getName());
+                    }
+                }
+            }
+            br.close();
+        }catch (Exception e) {e.printStackTrace();}
+    }
+
+    public void loadSettings() {
+        try {
+            File file = new File(MainDirectory, "settings.txt");
+            if (!file.isFile()) return;
+            FileInputStream fs = new FileInputStream(file.getAbsolutePath());
+            DataInputStream ds = new DataInputStream(fs);
+            BufferedReader br = new BufferedReader(new InputStreamReader(ds));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String curLine = line.trim();
+                String moduleName = curLine.split(":")[0];
+                String settingName = curLine.split(":")[1];
+                String value = curLine.split(":")[2];
+
+                Module module = Main.INSTANCE.moduleManager.getModuleByName(moduleName);
+                if(module != null) {
+                    if (!settingName.equalsIgnoreCase("keybind")) {
+                        Setting setting = Main.INSTANCE.settingManager.getSetting(module, settingName);
+                        if (setting instanceof BooleanSetting) {
+                            ((BooleanSetting) setting).setEnabled(Boolean.parseBoolean(value));
+                        }
+
+                        if (setting instanceof NumberSetting) {
+                            ((NumberSetting) setting).setValue(Double.parseDouble(value));
+                        }
+
+                        if (setting instanceof ModeSetting && ((ModeSetting) setting).getModes().toString().contains(value)) { // u have to make sure the mode getting loaded actually still exists or else u will have angry mob of ppl telling u ur config is fucking garbage... but actually yes ur config is fucking garbage because u wrote it when u were fucking monke and didn't know wtf u were doing, like seriously come on now, who the fuck writes a config in a normal fucking txt file, r u fucking stupid??????? like just do it in fucking json u fucking dumb cunt. goated redpilled postman comment.
+                            ((ModeSetting) setting).setMode(value);
+                        }
+
+                        if(setting instanceof ColorSetting) {
+                            ((ColorSetting) setting).setRainbow(Boolean.parseBoolean(curLine.split(":")[3]));
+                            ((ColorSetting) setting).fromInteger(Integer.parseInt(value));
+                        }
+
+                        if (setting instanceof KeybindSetting) {
+                            ((KeybindSetting) setting).setKey(Integer.parseInt(value));
+                        }
+                    }else
+                        module.setKey(Integer.parseInt(value));
+                }
+            }
+
+            br.close();
+        } catch (Exception e) {}
+    }
+
+    public void loadPrefix() {
+        try {
+            File file = new File(MainDirectory, "prefix.txt");
+            if (!file.isFile()) return;
+            FileInputStream fs = new FileInputStream(file.getAbsolutePath());
+            DataInputStream ds = new DataInputStream(fs);
+            BufferedReader br = new BufferedReader(new InputStreamReader(ds));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                Main.INSTANCE.commandManager.setPrefix(line);
+            }
+
+            br.close();
+        } catch (Exception e) {}
+    }
+
+    public void loadGui() {
+        if (ClickGuiScreen.getCategoryRects() == null) return;
+        try {
+            File file = new File(MainDirectory, "gui.txt");
+            if (!file.isFile()) return;
+            FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String curLine = line.trim();
+                String name = curLine.split(":")[0];
+                String x = curLine.split(":")[1];
+                String y = curLine.split(":")[2];
+                String open = curLine.split(":")[3];
+
+                int x1 = Integer.parseInt(x);
+                int y1 = Integer.parseInt(y);
+                boolean opened = Boolean.parseBoolean(open);
+
+                CategoryRect c = ClickGuiScreen.getCategoryRectByName(name);
+                if (c != null) {
+                    c.setX(x1);
+                    c.setY(y1);
+                    c.setOpen(opened);
+                    c.updatePosition(0, 0);
+                }
+            }
+
+            br.close();
+        } catch (Exception e) {}
+    }
+
+    public void loadHud() {
+        try {
+            File file = new File(MainDirectory, "hud.txt");
+            if (!file.isFile()) return;
+            FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String curLine = line.trim();
+                String name = curLine.split(":")[0];
+                String x = curLine.split(":")[1];
+                String y = curLine.split(":")[2];
+
+                int x1 = Integer.parseInt(x);
+                int y1 = Integer.parseInt(y);
+
+                HudModule h = Main.INSTANCE.hudManager.getHudModule(name);
+                if(h != null) {
+                    h.setX(x1);
+                    h.setY(y1);
+                }
+            }
+
+            br.close();
+        } catch (Exception e) {}
+    }
+}

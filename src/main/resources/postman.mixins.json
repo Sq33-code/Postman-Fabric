@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "package": "me.srgantmoomoo.postman.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MixinEntity",
+    "MixinSlimeBlock"
+  ],
+  "client": [
+    "MixinBlockCollisionSpliterator",
+    "MixinChatScreen",
+    "MixinClientConnection",
+    "MixinClientPlayerEntity",
+    "MixinClientWorld",
+    "MixinConnectScreen",
+    "MixinFluidState",
+    "MixinGameRenderer",
+    "MixinInGameHud",
+    "MixinKeyboard",
+    "MixinMinecraftClient",
+    "MixinRenderCamera",
+    "MixinRenderHands",
+    "MixinRenderWorld",
+    "MixinRenderEntities",
+    "MixinRenderNames",
+    "MixinRenderArmor",
+    "MixinRenderFire",
+    "MixinPeekStack",
+    "MixinPeekTooltip",
+    "MixinWorldProjection",
+    "AccessorDrawContext"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
