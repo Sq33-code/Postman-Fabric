@@ -63,10 +63,6 @@ The distributable JAR is `build/libs/postman-0.6.0.jar`. Do not install the `-so
 
 GitHub Actions is configured to run a Java 21 build on pushes and pull requests and archive the JAR when the build succeeds. It does not publish releases automatically.
 
-## Status and testing
-
-See [CHANGELOG.md](CHANGELOG.md) and [TESTING.md](TESTING.md) for the latest changes and the in-game validation checklist. The 0.6.0 source changes have not yet been verified by a complete Gradle build or an in-game run in the packaging environment (Gradle download failed due to DNS).
-
 ## Credits
 
 - **Sq33** — maintainer of this continuation, Minecraft 1.21.11 port, module restoration, and ongoing development.
